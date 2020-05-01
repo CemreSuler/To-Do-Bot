@@ -5,6 +5,7 @@ import discord
 from discord.utils import get
 from dotenv import load_dotenv
 import createChannels
+import todo
 
 #NEED TO FIX THIS WITH A BETTER ENV FILE!!
 TOKEN = 'NzA1Nzg0NDU0NzI3MzM1OTM2.Xqw56w.17hlBidfGbewgCyWOUMV4nc2mEE'
@@ -21,15 +22,12 @@ async def on_ready():
 #Calls this event whenever a message was sent to the server
 async def on_message(message):
     await createChannels.createChannels(message)
-    if(message.channel.name == "to-do"):
-        await message.add_reaction("\U0001F680")
-        await message.add_reaction("\U0000274C")
+    await todo.addReactions(message)
 
 @client.event
+#Calls this event whenever the user reacts to a message with an emoji
 async def on_reaction_add(reaction,user):
-    if(reaction.count == 2):
-        if(reaction.emoji == "\U0000274C"):
-            await reaction.message.delete()
+    await todo.todo(reaction)
 
     
 client.run(TOKEN)
