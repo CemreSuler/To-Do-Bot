@@ -11,7 +11,7 @@ import finished
 import deleted
 
 #NEED TO FIX THIS WITH A BETTER ENV FILE!!
-TOKEN = 'NzA1Nzg0NDU0NzI3MzM1OTM2.Xqw56w.17hlBidfGbewgCyWOUMV4nc2mEE'
+TOKEN = 'BOT TOKEN HERE'
 client = discord.Client()
 
 @client.event
