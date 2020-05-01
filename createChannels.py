@@ -41,3 +41,10 @@ async def createChannels(message):
         else:
             await message.channel.send("There is no text-channel with the name 'finished', I'll create one for you now!")
             await message.guild.create_text_channel('finished',category=categoryID)
+
+        #Checks if there is a deleted channel and creates it if there isn't
+        if (discord.utils.get(message.guild.text_channels, name="deleted")):
+            await message.channel.send("There is already a text-channel with the name 'deleted', so I won't create a new one")
+        else:
+            await message.channel.send("There is no text-channel with the name 'deleted', I'll create one for you now!")
+            await message.guild.create_text_channel('deleted',category=categoryID)

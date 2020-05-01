@@ -7,13 +7,13 @@ client = discord.Client()
 
 async def addReactions(message):
     #Reacts the checkmark, go-back and X emoji to messages sent in the to-do channel
-    if(message.channel.name == "to-do"):
+    if(message.channel.name == "in-progress"):
         await message.add_reaction("\U00002705") #finished
-        await message.add_reaction("\U0001F680") #rocket
+        await message.add_reaction("\U000021A9") #go-back
         await message.add_reaction("\U0000274C") #delete
 
-async def todo(reaction):
-    inProgressID = discord.utils.get(reaction.message.guild.text_channels, name="in-progress")
+async def inprogress(reaction):
+    todoID = discord.utils.get(reaction.message.guild.text_channels, name="to-do")
     finishedID = discord.utils.get(reaction.message.guild.text_channels, name="finished")
     deletedID = discord.utils.get(reaction.message.guild.text_channels, name="deleted")
     #This is important so that it doesn't use the bot's reactions for actions
@@ -25,9 +25,9 @@ async def todo(reaction):
             await reaction.message.delete()
 
         #If the reaction emoji is a go-back emoji, send the to-do-list item back to the to-do channel and delete it from the in-progress channel
-        if(reaction.emoji ==  "\U0001F680"):
-            await inProgressID.send(reaction.message.content)
-            await reaction.message.channel.send("Forwarded '" + str(reaction.message.content) + "' to the in-progress channel! (Removing this in 3 seconds)", delete_after=3)
+        if(reaction.emoji ==  "\U000021A9"):
+            await todoID.send(reaction.message.content)
+            await reaction.message.channel.send("Moved '" + str(reaction.message.content) + "' back to the to-do channel! (Removing this in 3 seconds)", delete_after=3)
             await reaction.message.delete()
 
         #If the reaction emoji is a cross, delete the to-do-list item
@@ -35,5 +35,3 @@ async def todo(reaction):
             await deletedID.send(reaction.message.content)
             await reaction.message.channel.send("Deleted '" + str(reaction.message.content) + "'  (Removing this in 3 seconds)", delete_after=3)
             await reaction.message.delete()
-
-           

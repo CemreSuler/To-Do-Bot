@@ -6,6 +6,9 @@ from discord.utils import get
 from dotenv import load_dotenv
 import createChannels
 import todo
+import inprogress
+import finished
+import deleted
 
 #NEED TO FIX THIS WITH A BETTER ENV FILE!!
 TOKEN = 'NzA1Nzg0NDU0NzI3MzM1OTM2.Xqw56w.17hlBidfGbewgCyWOUMV4nc2mEE'
@@ -23,11 +26,25 @@ async def on_ready():
 async def on_message(message):
     await createChannels.createChannels(message)
     await todo.addReactions(message)
+    await inprogress.addReactions(message)
+    await finished.addReactions(message)
+    await deleted.addReactions(message)
 
 @client.event
 #Calls this event whenever the user reacts to a message with an emoji
 async def on_reaction_add(reaction,user):
-    await todo.todo(reaction)
+    todoID = discord.utils.get(reaction.message.guild.text_channels, name="to-do")
+    inProgressID = discord.utils.get(reaction.message.guild.text_channels, name="in-progress")
+    finishedID = discord.utils.get(reaction.message.guild.text_channels, name="finished")
+    deletedID = discord.utils.get(reaction.message.guild.text_channels, name="deleted")
+    if(reaction.message.channel == todoID):
+        await todo.todo(reaction)
+    if(reaction.message.channel == inProgressID):
+        await inprogress.inprogress(reaction)
+    if(reaction.message.channel == finishedID):
+        await finished.finished(reaction)
+    if(reaction.message.channel == deletedID):
+        await deleted.deleted(reaction)
 
     
 client.run(TOKEN)
