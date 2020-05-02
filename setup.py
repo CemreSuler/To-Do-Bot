@@ -1,11 +1,11 @@
 import os
 import discord
 from discord.utils import get
-from dotenv import load_dotenv
+import json
 
 client = discord.Client()
 
-async def createChannels(message):
+async def setup(message):
     #Checks if it was a human that sent the message
     if message.author == client.user:
         return
@@ -48,3 +48,22 @@ async def createChannels(message):
         else:
             await message.channel.send("There is no text-channel with the name 'deleted', I'll create one for you now!")
             await message.guild.create_text_channel('deleted',category=categoryID)
+
+    guildID = message.guild.id
+    todoID = discord.utils.get(message.guild.text_channels, name="to-do")
+    inProgressID = discord.utils.get(message.guild.text_channels, name="in-progress")
+    finishedID = discord.utils.get(message.guild.text_channels, name="finished")
+    deletedID = discord.utils.get(message.guild.text_channels, name="deleted")
+    
+
+    guildData = {
+        guildID: {
+            "todoID":todoID.id,
+            "inProgressID":inProgressID.id,
+            "finishedID":finishedID.id,
+            "deletedID":deletedID.id
+        }
+    }
+    
+    with open("database.json", "w") as write_file:
+        json.dump(guildData, write_file)

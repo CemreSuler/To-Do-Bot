@@ -4,14 +4,14 @@ import os
 import discord
 from discord.utils import get
 from dotenv import load_dotenv
-import createChannels
+import setup
 import todo
 import inprogress
 import finished
 import deleted
 
 #NEED TO FIX THIS WITH A BETTER ENV FILE!!
-TOKEN = 'DISCORD_TOKEN'
+TOKEN = "NzA1Nzg0NDU0NzI3MzM1OTM2.Xq1iMg.I5kYaeEIYg6zCvhUGCiTXNOWlk0"
 client = discord.Client()
 
 @client.event
@@ -23,7 +23,7 @@ async def on_ready():
 @client.event
 #Calls this event whenever a message was sent to the server
 async def on_message(message):
-    await createChannels.createChannels(message)
+    await setup.setup(message)
     await todo.addReactions(message)
     await inprogress.addReactions(message)
     await finished.addReactions(message)
